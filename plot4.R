@@ -16,47 +16,26 @@ load.data <- function(filename) {
 plot4 <- function(filename) {
     ## Get the data
     dt <- load.data(filename)
-    len = nrow(dt)
+    datetime <- strptime(paste(dt[[1]], dt[[2]]), "%d/%m/%Y %T")
     
     ## Prepare the graphic device
     png(filename="plot4.png", width=480, height=480)
     par(mfcol=c(2,2))
     
     ## Global Active Power
-    dt1 <- dt[[3]]
-    par(xaxt="n")
-    plot(1:len, dt1, type="l", xlab="", ylab="Global Active Power")
-    par(xaxt="s")
-    axis(1, at=c(1, len/2+1, len+1), labels=c("Thu", "Fri", "Sat"))
+    plot(datetime, dt[[3]], type="l", xlab="", ylab="Global Active Power")
     
     ## Energy sub metering
-    dt1 <- dt[[7]]
-    dt2 <- dt[[8]]
-    dt3 <- dt[[9]]
-    par(xaxt="n")
-    plot(1:len, dt1, type="l", col="black", xlab="", ylab="Energy sub metering")
-    par(xaxt="s")
-    axis(1, at=c(1, len/2+1, len+1), labels=c("Thu", "Fri", "Sat"))
+    plot(datetime, dt[[7]], type="l", col="black", xlab="", ylab="Energy sub metering")
     legend("topright", bty="n", lty=1, col=c("black","red","blue"), legend=c("Sub_metering_1","Sub_metering_2","Sub_metering_3"))
-    par(col="red")
-    lines(1:len, dt2)
-    par(col="blue")
-    lines(1:len, dt3)
-    par(col="black")
+    lines(datetime, dt[[8]], col="red")
+    lines(datetime, dt[[9]], col="blue")
     
     ## Voltage
-    dt1 <- dt[[5]]
-    par(xaxt="n")
-    plot(1:len, dt1, type="l", xlab="datetime", ylab="Voltage")
-    par(xaxt="s")
-    axis(1, at=c(1, len/2+1, len+1), labels=c("Thu", "Fri", "Sat"))
+    plot(datetime, dt[[5]], type="l", xlab="datetime", ylab="Voltage")
     
     ## Global Reactive Power
-    dt1 <- dt[[4]]
-    par(xaxt="n")
-    plot(1:len, dt1, type="l", xlab="datetime", ylab="Global_reactive_power")
-    par(xaxt="s")
-    axis(1, at=c(1, len/2+1, len+1), labels=c("Thu", "Fri", "Sat"))
+    plot(datetime, dt[[4]], type="l", xlab="datetime", ylab="Global_reactive_power")
     
     ## Close the graphic device
     dev.off()

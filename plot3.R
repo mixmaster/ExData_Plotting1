@@ -16,20 +16,12 @@ load.data <- function(filename) {
 plot3 <- function(filename) {
     ## Get the data and create the plot file
     dt <- load.data(filename)
-    dt1 <- dt[[7]]
-    dt2 <- dt[[8]]
-    dt3 <- dt[[9]]
+    datetime <- strptime(paste(dt[[1]], dt[[2]]), "%d/%m/%Y %T")
     png(filename="plot3.png", width=480, height=480)
-    len = nrow(dt)
-    par(xaxt="n")
-    plot(1:len, dt1, type="l", col="black", xlab="", ylab="Energy sub metering")
-    par(xaxt="s")
-    axis(1, at=c(1, len/2+1, len+1), labels=c("Thu", "Fri", "Sat"))
+    plot(datetime, dt[[7]], type="l", col="black", xlab="", ylab="Energy sub metering")
     legend("topright", lty=1, col=c("black","red","blue"), legend=c("Sub_metering_1","Sub_metering_2","Sub_metering_3"))
-    par(col="red")
-    lines(1:len, dt2)
-    par(col="blue")
-    lines(1:len, dt3)
+    lines(datetime, dt[[8]], col="red")
+    lines(datetime, dt[[9]], col="blue")
     dev.off()
 }
 

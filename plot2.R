@@ -15,13 +15,10 @@ load.data <- function(filename) {
 ## This function create the plot into the PNG file
 plot2 <- function(filename) {
     ## Get the data and create the plot file
-    dt <- (load.data(filename))[[3]]
+    dt <- load.data(filename)
+    datetime <- strptime(paste(dt[[1]], dt[[2]]), "%d/%m/%Y %T")
     png(filename="plot2.png", width=480, height=480)
-    len = length(dt)
-    par(xaxt="n")
-    plot(1:len, dt, type="l", xlab="", ylab="Global Active Power (kilowatts)")
-    par(xaxt="s")
-    axis(1, at=c(1, len/2+1, len+1), labels=c("Thu", "Fri", "Sat"))
+    plot(datetime, dt[[3]], type="l", xlab="", ylab="Global Active Power (kilowatts)")
     dev.off()
 }
 
